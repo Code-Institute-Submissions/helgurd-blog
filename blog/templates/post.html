@@ -1,6 +1,6 @@
 {% extends 'layout.html'%}
 {% block nav%}
-    <div class="navbar-collapse collapse offset-md-6" id="navbarDefault">
+    <div class="navbar-collapse collapse offset-md-7" id="navbarDefault">
         <ul class="navbar-nav">
           <li class="nav-item ">
             <a class="nav-link" href="{{ url_for('home') }}">Profile</a>
@@ -9,7 +9,7 @@
             <a class="nav-link" href="{{ url_for('home') }}">Post</a>
           </li>
             <li class="nav-item" >
-            <a class="nav-link text-primary"  href="{{ url_for('profile') }}">{{ username|capitalize }}'s Profile</a>
+            <a class="nav-link text-primary"  href="{{ url_for('profile') }}">My Profile</a>
           </li>
           <li class="nav-item" >
             <a class="nav-link" style="color:red;" href="{{ url_for('logout') }}">Logout</a>
@@ -23,7 +23,7 @@
       <div class="row">
         <div class="col-md-12 col-lg-8">
           <div class="title-single-box">
-            <h5><small class="text-muted">Profile</small></h5>
+            <h5><small class="text-muted">Post</small></h5>
             <span class="color-text-a"></span>
           </div>
         </div>
@@ -37,9 +37,76 @@
 {% endblock%}
 
 {% block content %}
+    <h6 class="text-muted">Create Post</h6>
     <div class="row mt-n5 col-lg-12">
-        {{ username|capitalize }}'s Profile
+        <form action="" method="POST" class="" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                        {% for category,message in messages %}
+                        <div class="alert alert-{{ category }}">{{message}}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
 
+                <div class="form-group">
+                    {{ form.title.label(class='form-control-label')}}
+                    {% if form.title.errors %}
+                    {{ form.title(class="form-control  form-control-smis-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.title(class="form-control form-control-sm")}}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.category.label(class='form-control-label')}}
+                    {% if form.category.errors %}
+                    {{ form.category(class="form-control  form-control-smis-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.category.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.category(class="form-control form-control-sm")}}
+                    {% endif %}
+                </div>
+
+        <div class="form-group">
+                    {{ form.image.label(class='form-control-label')}}
+                    {% if form.image.errors %}
+                    {{ form.image(class="form-control  form-control-smis-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.image.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.image(class="form-control form-control-sm")}}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.description.label(class="form-control-label")}}
+                    {% if form.description.errors %}
+                    {{ form.description(class="form-control  form-control-smis-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.description.errors %}
+                        <span>{{error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.description(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group mt-3">
+                    {{ form.submit(class="btn btn-sm btn-success btn-block mt-4")}}
+                </div>
+            </form>
     </div>
 {% endblock %}
 
