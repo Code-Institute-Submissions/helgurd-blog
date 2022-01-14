@@ -30,7 +30,8 @@ def register():
     form = RegisterForm()
     if request.method == 'POST':
         existing_user = User.objects(email=form.email.data).first()
-        if existing_user is None:
+        check_username = User.objects(username=form.username.data).first()
+        if existing_user is None and check_username is None:
             hashpass = generate_password_hash(form.password.data, method='sha256')
             final = {"email": form.email.data, "password": hashpass, "username": form.username.data}
             hey = User(**final).save()
@@ -50,10 +51,11 @@ def login():
     if request.method == 'POST':
         # if form.validate():
         check_user = User.objects(email=form.email.data).first()
-        check_username = User.objects(username=form.username.data).first()
+        check_username = User.objects(username=form.email.data).first()
         if check_user or check_username:
-            if check_password_hash(check_user['password'], form.password.data):
-                login_user(check_user)
+            to_use = check_user if check_user else check_username
+            if check_password_hash(to_use['password'], form.password.data):
+                login_user(to_use)
                 return redirect(url_for('home'))
     return render_template('login.html', form=form)
 
