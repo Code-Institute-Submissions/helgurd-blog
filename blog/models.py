@@ -11,11 +11,6 @@ class User(UserMixin, db.Document):
     password = db.StringField()
 
 
-class Category(UserMixin, db.Document):
-    meta = {'collection': 'category'}
-    name = db.StringField(max_length=100)
-
-
 class BlogPost(UserMixin, db.Document):
     meta = {'collection': 'post'}
     title = db.StringField(max_length=100)
