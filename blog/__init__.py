@@ -1,3 +1,4 @@
+import os
 import secrets
 from flask import Flask, render_template, request, redirect, url_for
 from flask_mongoengine import MongoEngine, Document
@@ -15,5 +16,9 @@ app.config['SECRET_KEY'] = secrets.token_hex()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+UPLOAD_FOLDER = os.getcwd()
+app.config['UPLOAD_FOLDER'] = "uploads"
+
 
 from blog import routes

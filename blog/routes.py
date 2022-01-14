@@ -39,7 +39,7 @@ def register():
         check_username = User.objects(username=form.username.data).first()
         if existing_user is None and check_username is None:
             hashpass = generate_password_hash(form.password.data, method='sha256')
-            final = {"email": form.email.data, "password": hashpass, "username": form.username.data}
+            final = {"email": form.email.data, "password": hashpass, "username": form.username.data, "name" : form.name.data}
             hey = User(**final).save()
             login_user(hey)
             flash(f"User {form.username.data} created successfully", "success")
