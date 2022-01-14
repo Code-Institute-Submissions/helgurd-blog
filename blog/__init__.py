@@ -1,35 +1,19 @@
-from flask import Flask
-from flask_marshmallow import Marshmallow
-from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
-from dotenv import load_dotenv
-from flask_pymongo import PyMongo
-import os
 import secrets
-
-load_dotenv()
-
-
-db_pass = os.getenv('DBPASS')
-db_user = os.getenv("DBUSER")
-db_host = os.getenv("DBHOST")
-database = os.getenv("DB")
-
+from flask import Flask, render_template, request, redirect, url_for
+from flask_mongoengine import MongoEngine, Document
+from flask_login import LoginManager
 
 app = Flask(__name__)
-mongo = PyMongo(app)
-home = app.instance_path
-app.config["SECRET_KEY"] = secrets.token_hex()
-app.config["MONGO_URI"] = f"mongodb://localhost:27017/{database}"
 
-ma = Marshmallow(app)
+app.config['MONGODB_SETTINGS'] = {
+    'db': 'blog_two',
+    'host': 'mongodb://localhost:27017'
+}
 
-# init bcrypt
-bcrypt = Bcrypt(app)
-
-# init the login manager
-login_manager = LoginManager(app)
-login_manager.login_view = "login"
-login_manager.login_message_category = "info"
+db = MongoEngine(app)
+app.config['SECRET_KEY'] = secrets.token_hex()
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 from blog import routes

@@ -5,6 +5,13 @@
           <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('home') }}">Home</a>
           </li>
+
+            <li class="nav-item" >
+            <a class="nav-link text-primary"  href="{{ url_for('home') }}">{{ username }}Profile</a>
+          </li>
+          <li class="nav-item" >
+            <a class="nav-link" style="color:red;" href="{{ url_for('logout') }}">Logout</a>
+          </li>
         </ul>
       </div>
 {% endblock %}
@@ -18,6 +25,11 @@
             <span class="color-text-a"></span>
           </div>
         </div>
+
+          <div class="col-md-12 col-lg-4">
+              <input type="text" class="form-control form-control-sm" placeholder="search">
+        </div>
+
       </div>
     </div>
   </section>
