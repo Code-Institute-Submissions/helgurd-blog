@@ -29,12 +29,10 @@ def page_not_found(e):
 def register():
     form = RegisterForm()
     if request.method == 'POST':
-        print("is post")
         existing_user = User.objects(email=form.email.data).first()
         if existing_user is None:
-            print('1212121')
             hashpass = generate_password_hash(form.password.data, method='sha256')
-            final = {"email": form.email.data, "password": hashpass}
+            final = {"email": form.email.data, "password": hashpass, "username": form.username.data}
             hey = User(**final).save()
             login_user(hey)
             return redirect(url_for('home'))
