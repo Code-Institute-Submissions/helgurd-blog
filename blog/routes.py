@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request,flash
+from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -11,6 +11,12 @@ from blog.models import User
 @login_required
 def home():
     return render_template("home.html", username=current_user.username)
+
+
+@app.route("/profile")
+@login_required
+def profile():
+    return render_template("profile.html", username=current_user.username)
 
 
 @app.errorhandler(500)
@@ -36,7 +42,7 @@ def register():
             final = {"email": form.email.data, "password": hashpass, "username": form.username.data}
             hey = User(**final).save()
             login_user(hey)
-            flash(f"User {form.username.data} created successfully","success")
+            flash(f"User {form.username.data} created successfully", "success")
             return redirect(url_for('home'))
         else:
             flash(f"User {form.username.data} exists. Please try login or another username", "warning")
