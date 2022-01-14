@@ -36,19 +36,9 @@
 {% endblock%}
 
 {% block content %}
-    <div class="row mt-n5">
+    <div class="row mt-n5 col-lg-12">
         {{ username|capitalize }}'s Profile
-        <div class="col-lg-8">
-            {% for endpoint in endpoints %}
-                <div class="mt-2 mb-4">
-                    <div class="h6 font-weight-bold">{{loop.index}}. {{ endpoint['name'] }}
-                    <div class="h6 font-weight-light small pt-1 pb-2">Parameters : <code class="small">{{ endpoint['parameters'] }}</code>
-                    <div class="p mt-1 text-muted font-weight-light">{{ endpoint['description'] }}</div>
-                    <div class="p font-weight-light pt-2 text-primary " href="{{ endpoint['link']}}">{{ endpoint['link'] }}</div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+
     </div>
 {% endblock %}
 
