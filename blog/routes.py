@@ -1,29 +1,55 @@
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_user, login_required, logout_user, current_user, user_logged_in
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import os
 from blog import app
 from blog.form import RegisterForm, LoginForm, PostForm
 from blog.models import User, BlogPost
+from datetime import datetime
 
 
 @app.route("/")
 def home():
     user = current_user.username if current_user.is_authenticated else False
-    return render_template("home.html", username=user)
+    posts = BlogPost.objects
+    return render_template("home.html", username=user,posts=posts)
 
 
 @app.route("/profile")
 @login_required
 def profile():
     user = current_user.username if current_user.is_authenticated else False
-    return render_template("profile.html", username=user)
+    user_posts = None
+    if user:
+        user_posts = BlogPost.objects(author=current_user.username)
+    return render_template("profile.html", username=user, user_data=current_user, posts=user_posts)
 
 
-@app.route("/post")
+@app.route("/post", methods=["POST", "GET"])
 @login_required
 def post():
     form = PostForm()
+    if request.method == "POST":
+        if 'image' not in request.files:
+            flash("there is no image in form!", "danger")
+        else:
+            image = request.files['image']
+            file_name = image.filename
+            # creating object save
+            final = {
+                "title": form.title.data,
+                "description": form.description.data,
+                "image_path": file_name,
+                "category": form.category.data,
+                "author": current_user.username,
+                "created_at": datetime.now()
+            }
+
+            path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+            image.save(path)
+            BlogPost(**final).save()
+
+            flash("Post Created successfully", "success")
     user = current_user.username if current_user.is_authenticated else False
     return render_template("post.html", username=user, form=form)
 
@@ -50,8 +76,8 @@ def register():
             hashpass = generate_password_hash(form.password.data, method='sha256')
             final = {"email": form.email.data, "password": hashpass, "username": form.username.data,
                      "name": form.name.data}
-            hey = User(**final).save()
-            login_user(hey)
+            usr = User(**final).save()
+            login_user(usr)
             flash(f"User {form.username.data} created successfully", "success")
             return redirect(url_for('home'))
         else:

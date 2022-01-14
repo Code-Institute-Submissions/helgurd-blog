@@ -41,14 +41,6 @@
     <div class="row mt-n5 col-lg-12">
         <form action="" method="POST" class="" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                        {% for category,message in messages %}
-                        <div class="alert alert-{{ category }}">{{message}}</div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-
                 <div class="form-group">
                     {{ form.title.label(class='form-control-label')}}
                     {% if form.title.errors %}
