@@ -105,7 +105,6 @@ def post_edit(id):
                 "author": current_user.username,
                 "created_at": datetime.now()
             }
-
             path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             image.save(path)
 

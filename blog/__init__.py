@@ -8,7 +8,8 @@ import babel
 app = Flask(__name__)
 app.config['MONGODB_SETTINGS'] = {
     'db': 'blog_two',
-    'host': 'mongodb://localhost:27017'
+    'host': 'mongodb+srv://user:usr2022psswrd@cluster0.m6zch.mongodb.net/blog?retryWrites=true&w=majority'
+    # 'host': 'mongodb://localhost:27017'
 }
 
 
