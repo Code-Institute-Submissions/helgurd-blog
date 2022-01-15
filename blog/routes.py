@@ -1,11 +1,14 @@
-from flask import render_template, redirect, url_for, request, flash
-from flask_login import login_user, login_required, logout_user, current_user, user_logged_in
-from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from datetime import datetime
+
+from flask import render_template, redirect, url_for, request, flash
+from flask import send_from_directory
+from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from blog import app
 from blog.form import RegisterForm, LoginForm, PostForm
 from blog.models import User, BlogPost
-from datetime import datetime
 
 
 @app.route("/")
@@ -18,11 +21,11 @@ def home():
 @app.route("/post/<string:id>")
 def get_single_post(id):
     user = current_user.username if current_user.is_authenticated else False
-    post = BlogPost.objects(id=id)
-    return render_template("single.html", username=user, post=post[0])
+    post = BlogPost.objects(id=id).first()
+    return render_template("single.html", username=user, post=post, image=post.image_path)
 
 
-@app.route("/post//delete/<string:id>")
+@app.route("/post/delete/<string:id>")
 @login_required
 def post_delete(id):
     user = current_user.username if current_user.is_authenticated else False
@@ -32,6 +35,11 @@ def post_delete(id):
         flash("Post Deleted Successfully", "success")
         return redirect(url_for("home"))
     return render_template("single.html", username=user, post=post[0])
+
+
+@app.route('/uploads/<filename>')
+def send_uploaded_file(filename=''):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 
 @app.route("/profile")
@@ -76,8 +84,12 @@ def post():
 @app.route("/post/edit/<string:id>", methods=["POST", "GET"])
 @login_required
 def post_edit(id):
-    post = BlogPost.objects(id=id)
+    post = BlogPost.objects(id=id).first()
     form = PostForm()
+    form.title.data = post.title
+    form.description.data = post.description
+    form.category.data = post.category
+
     if request.method == "POST":
         if 'image' not in request.files:
             flash("there is no image in form!", "danger")
@@ -96,9 +108,10 @@ def post_edit(id):
 
             path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             image.save(path)
-            BlogPost(**final).save()
 
-            flash("Post Created successfully", "success")
+            post.update(**final)
+
+            flash("Post Update successfully", "success")
     user = current_user.username if current_user.is_authenticated else False
     return render_template("post.html", username=user, form=form)
 

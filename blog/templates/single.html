@@ -46,22 +46,35 @@
 
 {% block content %}
     <div class="row mt-n5">
-        <div class="col-lg-2 ">
-             <img style="height: 100px; object-fit: cover;" src="https://images.unsplash.com/photo-1642096633192-9290503a9a38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="">
+        <div class="text-muted col-lg-12">
+            <img style="height: 100px; object-fit: cover;"  src="/uploads/{{ image }}" width="100%" alt="">
         </div>
-        <div class="col-lg-8 ml-3">
+    </div>
+    <div class="row">
+
+        <div class="col-lg-8 mt-2">
             <h6 class="text-muted font-weight-bold">{{ post.title }}
-                <br>{{ post.author }}<br>{{ post.category }}</h6>
-            <h6 class="text-muted font-weight-bold">{{ post.created_at }}</h6>
+                <br>Author : {{ post.author }}<br>Category : {{ post.category }}</h6>
+            <h6 class="text-muted ">{{ post.created_at|format_datetime('full') }}</h6>
         </div>
 <div class="col-lg-8 mt-3">
             <h6>Description</h6>
             <h6 class="text-muted font-weight-bold">{{ post.description }}</h6>
 </div>
-<div class="col-lg-8 mt-4 ">
-    <a class="btn btn-sm btn-primary col-lg-2" href="{{ url_for("post_edit",id=post.id) }}" style="color:#fff">Edit</a>
-    <a class="btn btn-sm btn-danger col-lg-2" href="{{ url_for("post_delete",id=post.id) }}" style="color:#fff">Delete</a>
-</div>
+{% if username == post.author %}
+
+    <div class="col-lg-8 mt-4 ">
+        <a class="btn btn-sm btn-primary col-lg-2" href="{{ url_for("post_edit",id=post.id) }}" style="color:#fff">Edit</a>
+        <a class="btn btn-sm btn-danger col-lg-2" href="{{ url_for("post_delete",id=post.id) }}" style="color:#fff">Delete</a>
+    </div>
+    {% else %}
+    <div class="col-lg-8 mt-4 ">
+        Please login to access management features
+    </div>
+    <div class="col-lg-8 mt-2 ">
+        <a class="btn btn-sm btn-success col-lg-2" href="{{ url_for("login",id=post.id) }}" style="color:#fff">Login</a>
+    </div>
+{% endif %}
 {% endblock %}
 
 
