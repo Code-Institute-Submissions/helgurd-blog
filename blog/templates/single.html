@@ -37,7 +37,6 @@
         </div>
 
           <div class="col-md-12 col-lg-4">
-              <input type="text" class="form-control form-control-sm" placeholder="search">
         </div>
 
       </div>
@@ -47,23 +46,22 @@
 
 {% block content %}
     <div class="row mt-n5">
-        <div class="text-muted col-lg-12">
-            <img style="height: 100px; object-fit: cover;" src="https://images.unsplash.com/photo-1642096633192-9290503a9a38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" width="100%" alt="">
+        <div class="col-lg-2 ">
+             <img style="height: 100px; object-fit: cover;" src="https://images.unsplash.com/photo-1642096633192-9290503a9a38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="">
         </div>
-    {% for post in posts %}
-        <a class="mt-3 row col-lg-11" style="border:2px solid #dee2e6; margin-left:15px; padding-top:10px; padding-bottom: 10px; border-radius:5px; cursor: pointer;" href="{{ url_for('get_single_post',id=post.id) }}">
-            <div class="col-lg-2 ">
-                 <img style="height: 100px; object-fit: cover;" src="https://images.unsplash.com/photo-1642096633192-9290503a9a38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="">
-            </div>
-            <div class="col-lg-8 ml-3">
-                <h6 class="text-muted font-weight-bold">{{ post.title }}
-                    <br>{{ post.author }}<br>{{ post.category }}</h6>
-                <h6 class="text-muted font-weight-bold">{{ post.created_at }}</h6>
-
-            </div>
-        </a><br>
-    {% endfor %}
-
+        <div class="col-lg-8 ml-3">
+            <h6 class="text-muted font-weight-bold">{{ post.title }}
+                <br>{{ post.author }}<br>{{ post.category }}</h6>
+            <h6 class="text-muted font-weight-bold">{{ post.created_at }}</h6>
+        </div>
+<div class="col-lg-8 mt-3">
+            <h6>Description</h6>
+            <h6 class="text-muted font-weight-bold">{{ post.description }}</h6>
+</div>
+<div class="col-lg-8 mt-4 ">
+    <a class="btn btn-sm btn-primary col-lg-2" style="color:#fff">Edit</a>
+    <a class="btn btn-sm btn-danger col-lg-2"  style="color:#fff">Delete</a>
+</div>
 {% endblock %}
 
 

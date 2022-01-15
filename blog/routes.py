@@ -12,7 +12,21 @@ from datetime import datetime
 def home():
     user = current_user.username if current_user.is_authenticated else False
     posts = BlogPost.objects
-    return render_template("home.html", username=user,posts=posts)
+    return render_template("home.html", username=user, posts=posts)
+
+
+@app.route("/post/<string:id>")
+def get_single_post(id):
+    user = current_user.username if current_user.is_authenticated else False
+    post = BlogPost.objects(id=id)
+    return render_template("single.html", username=user, post=post[0])
+
+
+@app.route("/post//delete/<string:id>")
+def post_delete(id):
+    user = current_user.username if current_user.is_authenticated else False
+    post = BlogPost.objects(id=id)
+    return render_template("single.html", username=user, post=post[0])
 
 
 @app.route("/profile")
@@ -22,7 +36,7 @@ def profile():
     user_posts = None
     if user:
         user_posts = BlogPost.objects(author=current_user.username)
-    return render_template("profile.html", username=user, user_data=current_user, posts=user_posts)
+    return render_template("profile.html", username=user, user=current_user, posts=user_posts)
 
 
 @app.route("/post", methods=["POST", "GET"])
@@ -52,6 +66,37 @@ def post():
             flash("Post Created successfully", "success")
     user = current_user.username if current_user.is_authenticated else False
     return render_template("post.html", username=user, form=form)
+
+
+@app.route("/post/edit/<string:id>", methods=["POST", "GET"])
+@login_required
+def post_edit(id):
+    post = BlogPost.objects(id=id)
+    form = PostForm()
+    if request.method == "POST":
+        if 'image' not in request.files:
+            flash("there is no image in form!", "danger")
+        else:
+            image = request.files['image']
+            file_name = image.filename
+            # creating object save
+            final = {
+                "title": form.title.data,
+                "description": form.description.data,
+                "image_path": file_name,
+                "category": form.category.data,
+                "author": current_user.username,
+                "created_at": datetime.now()
+            }
+
+            path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+            image.save(path)
+            BlogPost(**final).save()
+
+            flash("Post Created successfully", "success")
+    user = current_user.username if current_user.is_authenticated else False
+    return render_template("post.html", username=user, form=form)
+
 
 
 @app.errorhandler(500)

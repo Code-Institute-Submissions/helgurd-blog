@@ -38,9 +38,26 @@
 
 {% block content %}
     <div class="row mt-n5 col-lg-12">
-        {{ username|capitalize }}'s Profile
-
+        <h6 >
+            <span class="text-muted font-weight-bold">{{ username|capitalize }}'s Profile</span>
+            <br>
+            {{ user.name }}<br>
+            {{ user.email }}<br>
+        </h6>
     </div>
+    <div class="text-muted font-weight-bold h6">User Posts</div>
+     {% for post in posts %}
+        <a class="mt-3 row col-lg-11" style="border:2px solid #dee2e6; margin-left:0px; padding-top:10px; padding-bottom: 10px; border-radius:5px; cursor: pointer;" href="{{ url_for('get_single_post',id=post.id) }}">
+            <div class="col-lg-3 ">
+                 <img style="height: 100px; object-fit: cover;" src="https://images.unsplash.com/photo-1642096633192-9290503a9a38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="">
+            </div>
+            <div class="col-lg-8 ml-3">
+                <h6 class="text-muted font-weight-bold">{{ post.title }}
+                    <br>{{ post.author }}<br>{{ post.category }}</h6>
+                <h6 class="text-muted font-weight-bold">{{ post.created_at }}</h6>
+            </div>
+        </a><br>
+    {% endfor %}
 {% endblock %}
 
 
