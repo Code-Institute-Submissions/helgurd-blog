@@ -59,8 +59,8 @@
             <h6 class="text-muted font-weight-bold">{{ post.description }}</h6>
 </div>
 <div class="col-lg-8 mt-4 ">
-    <a class="btn btn-sm btn-primary col-lg-2" style="color:#fff">Edit</a>
-    <a class="btn btn-sm btn-danger col-lg-2"  style="color:#fff">Delete</a>
+    <a class="btn btn-sm btn-primary col-lg-2" href="{{ url_for("post_edit",id=post.id) }}" style="color:#fff">Edit</a>
+    <a class="btn btn-sm btn-danger col-lg-2" href="{{ url_for("post_delete",id=post.id) }}" style="color:#fff">Delete</a>
 </div>
 {% endblock %}
 

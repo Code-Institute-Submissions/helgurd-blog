@@ -23,9 +23,14 @@ def get_single_post(id):
 
 
 @app.route("/post//delete/<string:id>")
+@login_required
 def post_delete(id):
     user = current_user.username if current_user.is_authenticated else False
     post = BlogPost.objects(id=id)
+    if user == post[0].author:
+        BlogPost.objects(id=id).delete()
+        flash("Post Deleted Successfully", "success")
+        return redirect(url_for("home"))
     return render_template("single.html", username=user, post=post[0])
 
 
@@ -96,7 +101,6 @@ def post_edit(id):
             flash("Post Created successfully", "success")
     user = current_user.username if current_user.is_authenticated else False
     return render_template("post.html", username=user, form=form)
-
 
 
 @app.errorhandler(500)

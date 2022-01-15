@@ -17,7 +17,6 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 UPLOAD_FOLDER = os.getcwd()
-app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path,"uploads")
-
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, "uploads")
 
 from blog import routes
