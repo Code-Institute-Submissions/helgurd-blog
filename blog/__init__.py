@@ -12,6 +12,7 @@ app.config['MONGODB_SETTINGS'] = {
     # 'host': 'mongodb://localhost:27017'
 }
 
+# heroku config:set MONGODB_URI='mongodb+srv://user:usr2022psswrd@cluster0.m6zch.mongodb.net/blog?retryWrites=true&w=majority'
 
 @app.template_filter()
 def format_datetime(value, format='medium'):
